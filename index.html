@@ -5,28 +5,164 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>GemLife Palmwoods Residents Directory</title>
 <style>
-body { font-family: Arial, sans-serif; padding: 20px; max-width: 900px; margin: 0 auto; background: #fafafa; }
-.search { width: 100%; padding: 15px; font-size: 16px; border: 2px solid #ddd; border-radius: 8px; margin-bottom: 20px; box-sizing: border-box; }
-.search:focus { outline: none; border-color: #4F46E5; }
-.count { text-align: center; color: #666; margin-bottom: 15px; font-size: 14px; }
-.villa { background: white; margin: 10px 0; padding: 15px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-.villa-header { background: #4F46E5; color: white; padding: 12px; margin: -15px -15px 15px -15px; border-radius: 8px 8px 0 0; font-weight: bold; font-size: 16px; }
-.resident { padding: 12px 0; border-top: 1px solid #eee; }
-.resident:first-child { border-top: none; padding-top: 0; }
-.name { font-weight: bold; color: #111; font-size: 15px; }
-.role { color: #4F46E5; font-size: 13px; margin-top: 3px; font-weight: 500; }
-.contact { color: #666; font-size: 14px; margin-top: 5px; }
-.contact a { color: #666; text-decoration: none; }
-.contact a:hover { color: #4F46E5; text-decoration: underline; }
-.welcome { text-align: center; padding: 80px 20px; color: #999; }
-.welcome-icon { font-size: 64px; margin-bottom: 15px; }
-.welcome-text { font-size: 20px; }
+/* Base styles */
+* { box-sizing: border-box; }
+
+body { 
+  font-family: Arial, sans-serif; 
+  padding: 10px; 
+  margin: 0;
+  background: #fafafa; 
+}
+
+/* Container - responsive width */
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* Search box - responsive */
+.search { 
+  width: 100%;
+  max-width: 100%;
+  padding: 12px 15px;
+  font-size: 16px;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  -webkit-appearance: none; /* Fix iOS styling */
+}
+
+.search:focus { 
+  outline: none;
+  border-color: #4F46E5;
+}
+
+/* Result count */
+.count { 
+  text-align: center;
+  color: #666;
+  margin-bottom: 15px;
+  font-size: 14px;
+}
+
+/* Villa cards */
+.villa { 
+  background: white;
+  margin: 10px 0;
+  padding: 12px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.villa-header { 
+  background: #4F46E5;
+  color: white;
+  padding: 10px 12px;
+  margin: -12px -12px 12px -12px;
+  border-radius: 8px 8px 0 0;
+  font-weight: bold;
+  font-size: 15px;
+}
+
+/* Residents */
+.resident { 
+  padding: 10px 0;
+  border-top: 1px solid #eee;
+}
+
+.resident:first-child { 
+  border-top: none;
+  padding-top: 0;
+}
+
+.name { 
+  font-weight: bold;
+  color: #111;
+  font-size: 15px;
+  word-wrap: break-word;
+}
+
+.role { 
+  color: #4F46E5;
+  font-size: 13px;
+  margin-top: 3px;
+  font-weight: 500;
+}
+
+.contact { 
+  color: #666;
+  font-size: 14px;
+  margin-top: 5px;
+  word-wrap: break-word;
+}
+
+.contact a { 
+  color: #666;
+  text-decoration: none;
+  word-wrap: break-word;
+}
+
+.contact a:hover { 
+  color: #4F46E5;
+  text-decoration: underline;
+}
+
+/* Welcome message */
+.welcome { 
+  text-align: center;
+  padding: 60px 20px;
+  color: #999;
+}
+
+.welcome-icon { 
+  font-size: 48px;
+  margin-bottom: 10px;
+}
+
+.welcome-text { 
+  font-size: 16px;
+}
+
+/* Tablet styles (screens 600px and up) */
+@media (min-width: 600px) {
+  body { padding: 20px; }
+  
+  .search { 
+    padding: 15px;
+    font-size: 16px;
+  }
+  
+  .villa { padding: 15px; }
+  
+  .villa-header { 
+    padding: 12px;
+    margin: -15px -15px 15px -15px;
+    font-size: 16px;
+  }
+  
+  .resident { padding: 12px 0; }
+  
+  .welcome { padding: 80px 20px; }
+  
+  .welcome-icon { font-size: 64px; }
+  
+  .welcome-text { font-size: 20px; }
+}
+
+/* Desktop styles (screens 900px and up) */
+@media (min-width: 900px) {
+  .search { max-width: 900px; }
+}
 </style>
 </head>
 <body>
-<input type="text" id="search" class="search" placeholder="🔍 Search by name, villa number, phone, or email..." autofocus>
-<div id="count" class="count"></div>
-<div id="results"></div>
+<div class="container">
+  <input type="text" id="search" class="search" placeholder="🔍 Search name, villa, phone..." autofocus>
+  <div id="count" class="count"></div>
+  <div id="results"></div>
+</div>
 <script>
 const residents = [
   {
@@ -3098,7 +3234,7 @@ function render() {
 
   // Show welcome message if no search
   if (!search.trim()) {
-    resultsDiv.innerHTML = '<div class="welcome"><div class="welcome-icon">👋</div><div class="welcome-text">Start typing above to search for residents</div></div>';
+    resultsDiv.innerHTML = '<div class="welcome"><div class="welcome-icon">👋</div><div class="welcome-text">Start typing to search</div></div>';
     countDiv.innerHTML = '';
     return;
   }
