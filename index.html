@@ -742,15 +742,29 @@ function printDirectory() {
   var today = new Date().toLocaleDateString('en-AU', {day:'numeric', month:'long', year:'numeric'});
   document.getElementById('printSubtitle').textContent = 'Printed ' + today + '  •  ' + residents.length + ' residents';
   var sorted = residents.slice().sort(function(a,b){ return a.villa - b.villa || a.lastName.localeCompare(b.lastName); });
-  var rows = sorted.map(function(r){
+
+  var rows = [];
+  var colourIndex = 0;
+  var lastVilla = null;
+  var colours = ['#EEF2FF', '#F0FDF4'];
+
+  sorted.forEach(function(r) {
+    if (r.villa !== lastVilla) {
+      if (lastVilla !== null) colourIndex = 1 - colourIndex;
+      lastVilla = r.villa;
+    }
     var villa = r.villa === 0 ? 'Staff' : r.villa;
-    return '<div class="print-row">' +
-      '<div class="print-col-villa">' + villa + '</div>' +
-      '<div class="print-col-name">' + r.firstName + ' ' + r.lastName + '</div>' +
-      '<div class="print-col-phone">' + r.phone + '</div>' +
-      '<div class="print-col-email">' + r.email + '</div>' +
-      '</div>';
+    var bg = colours[colourIndex];
+    rows.push(
+      '<div class="print-row" style="background:' + bg + '">' +
+        '<div class="print-col-villa">' + villa + '</div>' +
+        '<div class="print-col-name">' + r.firstName + ' ' + r.lastName + '</div>' +
+        '<div class="print-col-phone">' + r.phone + '</div>' +
+        '<div class="print-col-email">' + r.email + '</div>' +
+      '</div>'
+    );
   });
+
   document.getElementById('printRows').innerHTML = rows.join('');
   window.print();
 }
