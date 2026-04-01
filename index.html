@@ -12,6 +12,22 @@ body { font-family: Arial, sans-serif; padding: 10px; margin: 0; background: #fa
 .search:focus { outline: none; border-color: #4F46E5; }
 .map-button { padding: 12px 20px; background: #4F46E5; color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; white-space: nowrap; }
 .map-button:hover { background: #4338CA; }
+.print-button { padding: 12px 20px; background: #10B981; color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; white-space: nowrap; }
+.print-button:hover { background: #059669; }
+@media print {
+  .header, .count, .map-modal, #results { display: none !important; }
+  .print-area { display: block !important; }
+  body { background: white; padding: 10px; font-size: 11px; }
+  .print-title { font-size: 18px; font-weight: bold; text-align: center; margin-bottom: 6px; }
+  .print-subtitle { text-align: center; color: #666; margin-bottom: 14px; font-size: 11px; }
+  .print-row { display: flex; border-bottom: 1px solid #eee; padding: 3px 0; page-break-inside: avoid; }
+  .print-row.header-row { background: #4F46E5; color: white; font-weight: bold; padding: 5px 0; }
+  .print-col-villa { width: 8%; text-align: center; }
+  .print-col-name { width: 30%; }
+  .print-col-phone { width: 22%; }
+  .print-col-email { width: 40%; }
+}
+.print-area { display: none; }
 .count { text-align: center; color: #666; margin-bottom: 15px; }
 .villa { background: white; padding: 12px; margin: 10px 0; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
 .villa-header { background: #4F46E5; color: white; padding: 10px 12px; margin: -12px -12px 12px -12px; border-radius: 8px 8px 0 0; font-weight: bold; font-size: 15px; }
@@ -71,6 +87,7 @@ body { font-family: Arial, sans-serif; padding: 10px; margin: 0; background: #fa
   <div class="header">
     <input type="text" id="searchBox" class="search" placeholder="🔍 Search..." autofocus="">
     <button class="map-button" onclick="openMap()">🗺️ Map</button>
+    <button class="print-button" onclick="printDirectory()">🖨️ Print</button>
   </div>
   <div id="count" class="count"></div>
   <div id="results"><div class="welcome"><h2>👋</h2><p>Start typing to search</p></div></div>
@@ -698,4 +715,34 @@ performSearch();
 </script>
 
 
+
+<div class="print-area" id="printArea">
+  <div class="print-title">GemLife Palmwoods Village Directory</div>
+  <div class="print-subtitle" id="printSubtitle"></div>
+  <div class="print-row header-row">
+    <div class="print-col-villa">Villa</div>
+    <div class="print-col-name">Name</div>
+    <div class="print-col-phone">Phone</div>
+    <div class="print-col-email">Email</div>
+  </div>
+  <div id="printRows"></div>
+</div>
+<script>
+function printDirectory() {
+  var today = new Date().toLocaleDateString('en-AU', {day:'numeric', month:'long', year:'numeric'});
+  document.getElementById('printSubtitle').textContent = 'Printed ' + today + '  •  ' + residents.length + ' residents';
+  var sorted = residents.slice().sort(function(a,b){ return a.villa - b.villa || a.lastName.localeCompare(b.lastName); });
+  var rows = sorted.map(function(r){
+    var villa = r.villa === 0 ? 'Staff' : r.villa;
+    return '<div class="print-row">' +
+      '<div class="print-col-villa">' + villa + '</div>' +
+      '<div class="print-col-name">' + r.firstName + ' ' + r.lastName + '</div>' +
+      '<div class="print-col-phone">' + r.phone + '</div>' +
+      '<div class="print-col-email">' + r.email + '</div>' +
+      '</div>';
+  });
+  document.getElementById('printRows').innerHTML = rows.join('');
+  window.print();
+}
+</script>
 </body></html>
