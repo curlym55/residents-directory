@@ -13,8 +13,12 @@ body { font-family: Arial, sans-serif; padding: 10px; margin: 0; background: #fa
 .map-button { padding: 12px 20px; background: #4F46E5; color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; white-space: nowrap; }
 .map-button:hover { background: #4338CA; }
 .print-button { padding: 12px 20px; background: #10B981; color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; white-space: nowrap; }
+.print-button-mobile { display: none; width: 100%; padding: 12px; background: #10B981; color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; margin-bottom: 10px; }
+.print-button-mobile:hover { background: #059669; }
 .print-button:hover { background: #059669; }
+@page { margin: 10mm; }
 @media print {
+  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   .header, .count, .map-modal, #results { display: none !important; }
   .print-area { display: block !important; }
   body { background: white; padding: 10px; font-size: 11px; }
@@ -61,6 +65,8 @@ body { font-family: Arial, sans-serif; padding: 10px; margin: 0; background: #fa
 @media (max-width: 767px) {
   .map-button { display: none; }
   .show-map-btn { display: none; }
+  .print-button { display: none; }
+  .print-button-mobile { display: block !important; }
 }
 @media (min-width: 600px) {
   body { padding: 20px; }
@@ -89,6 +95,7 @@ body { font-family: Arial, sans-serif; padding: 10px; margin: 0; background: #fa
     <button class="map-button" onclick="openMap()">🗺️ Map</button>
     <button class="print-button" onclick="printDirectory()">🖨️ Print</button>
   </div>
+  <button class="print-button-mobile" onclick="printDirectory()">🖨️ Print Directory</button>
   <div id="count" class="count"></div>
   <div id="results"><div class="welcome"><h2>👋</h2><p>Start typing to search</p></div></div>
 </div>
